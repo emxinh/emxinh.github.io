@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<title>Angular Grid With Infinite Scroll</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+		<link rel="stylesheet" href="assets/css/normalize.css">
+		<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.4/angular-material.css'>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.6.4/css/ngDialog.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.6.4/css/ngDialog-theme-default.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+	</head>
+
+	<body>
+    	<div ng-controller="MainController as vm" ng-cloak="" ng-app="GXinh" layout="column" layout-fill>
+  			<md-toolbar class="md-whiteframe-z2">
+    			<div class="md-toolbar-tools">
+      				<button class="md-button md-icon-button">
+        				<md-icon>
+							<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0h24v24H0z" fill="none"/>
+								<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+							</svg>
+        				</md-icon>
+      				</button>
+      				<h2>
+			        	<span>Girl Xinh on TOP</span>
+			      	</h2>
+    			</div>
+  			</md-toolbar>
+
+  			<md-content id="content-scroller">
+<!--     			<div id="summary">
+      				<h3>Description</h3>
+      				<p>Executes method on the controller when the user approaches the bottom of the page as they scroll.</p>
+      				<h3>Usage</h3>
+      				<p>Add the <code>infinite-scroll</code> attribute to the element that you have applied <code>angular-grid</code> to specifying the method on your controller to execute as the user approaches the bottom of the angular grid. If angular grid is being scrolled within a div set to overflow scroll or auto, add the <code>infinite-scroll-container</code> attribute specifying the selector of the element being scrolled. </p>
+      				<h3>Example</h3>
+      
+      				<h3>Demo</h3>
+
+    			</div> -->
+    			<div>
+        			<div 
+        				class="cards-wrap" 
+        				angular-grid="vm.listItems" 
+        				ag-grid-width="300" 
+        				ag-gutter-size="12" 
+        				ag-id="shots" 
+        				ag-infinite-scroll="vm.getData()"
+        			>
+          				<div class="card" ng-repeat="item in vm.listItems track by $index">
+            				<!-- <div class="img" ng-click="vm.showDialog(item)" style="background-image: url({{::item.url}});"></div>-->            				
+            				<img src="{{item.url}}" class="grid-img" ng-click="vm.showDialog(item)" data-actual-width = "{{item.actualWidth}}"  data-actual-height="{{item.actualHeight}}" />      	
+            				<div class="img-desc-wrap">
+		                        <div class="title ng-binding">
+		                            {{::item.title}}
+		                        </div>
+		                        <div class="uploaded-date ng-binding">
+		                            Uploaded on : Wed Nov 23 2016
+		                        </div>
+		                       <!--  <div class="likes-watch-wrap">
+		                            <div class="likes ng-binding"><span class="icon-like"></span> 35</div>
+		                            <div class="watch ng-binding"><span class="icon-watch"></span> 600</div>
+		                        </div> -->
+		                    </div>
+          				</div>
+        			</div>
+        			<div class="loading-more-indicator" ng-show="vm.loadingMore">
+          				<md-progress-circular md-mode="indeterminate" md-diameter="64" class="progress-swatch"></md-progress-circular>
+        			</div>
+    			</div>
+  			</md-content>
+		</div>
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular-animate.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular-aria.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular-route.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular-messages.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular-animate.min.js"></script>
+		<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.4/angular-material.js'></script>
+		<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.6.4/js/ngDialog.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+		<script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+		<!-- <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script> -->
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyAO4QjB3FCPElCGcEy3YHk4Zzx4CkR0L10",
+		    authDomain: "gxinh-9243d.firebaseapp.com",
+		    databaseURL: "https://gxinh-9243d.firebaseio.com",
+		    storageBucket: "gxinh-9243d.appspot.com",
+		    messagingSenderId: "410364848328"
+		  };
+		  firebase.initializeApp(config);
+		</script>
+
+		<!-- <script src='https://cdn.rawgit.com/sroze/ngInfiniteScroll/master/build/ng-infinite-scroll.js'></script> -->
+		<!-- <script>
+			(function() {var a = document.createElement("script");a.src = "https://rawgit.com/kentcdodds/ng-stats/master/dist/ng-stats.js";a.onload=function(){window.showAngularStats({position: 'topright'})};document.head.appendChild(a)})();
+		</script> -->
+		<script src="assets/js/angulargrid.js"></script>
+		<script src="controllers/mainCtrl.js"></script>
+        <script src="app.js"></script>
+	</body>
+</html>
