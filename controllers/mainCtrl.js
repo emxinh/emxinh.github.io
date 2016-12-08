@@ -1,14 +1,55 @@
 angular.module('mainCtrl', [])
 
-.controller('MainController', function ($scope, $http, $q, $mdDialog) {
+.controller('MainController', function ($scope, $http, $q, $mdDialog, $firebaseArray) {
 
 	var vm = this;
-	$scope.card = {};
-  	$scope.card.title = 'test';
-  	vm.page = 0;
-  	vm.shots = [];
-  	vm.listItems = [];
+	vm.ref = firebase.database().ref('items');
+	vm.listItems = [];
+	vm.lastCreatedValue = 0;  	 
   	vm.loadingMore = false;  		
+	vm.page = 0; 
+
+	vm.loadItems = function() {
+		if(vm.loadingMore) return;
+
+		vm.loadingMore = true; 
+  		var query = vm.ref;
+
+  		if (vm.page == 0) {
+  			query = vm.ref.orderByChild("created_at").limitToLast(10);			
+  		} else {
+  			query = vm.ref.orderByChild("created_at").endAt(vm.lastCreatedValue).limitToLast(10);
+  		}
+	  	
+	  	var listTempItems = $firebaseArray(query);
+	  	listTempItems.$loaded().then(function() {	  		
+	  		
+	  		console.log("done");
+	  		listTempItems = listTempItems.sort(function(a,b) {
+	        	return b.created_at - a.created_at;
+	        });
+
+	        var listOrderdItems = listTempItems;
+	        if (vm.page != 0) {
+	        	listOrderdItems = listOrderdItems.splice(1,listOrderdItems.length -1);
+	        }	        
+
+	        if (listOrderdItems.length > 0) {
+	        	vm.lastCreatedValue = listOrderdItems[listOrderdItems.length - 1].created_at;
+		        if (vm.page == 0) {
+		        	vm.listItems = listOrderdItems;	
+		        } else {
+		        	vm.listItems = vm.listItems.concat(listOrderdItems);
+		        }
+
+		        vm.page++;		  		
+	        }
+
+	        vm.loadingMore = false;	        		        
+	  	});  	  	
+	}; 	
+
+	vm.loadItems();
 
   	vm.loadMoreShots = function() {
 		console.log('aaa');
@@ -27,22 +68,6 @@ angular.module('mainCtrl', [])
     	});
     	return promise;
   	};
-
-  	vm.getData = function() {
-  		firebase.database().ref('items/').on('value',function(snapshot) {          
-          if (snapshot.hasChildren()) {
-          	vm.loadingMore = true;
-            snapshot.forEach(function(value) {
-              	console.log(value.val());
-              	var item = value.val(); 
-              vm.listItems.push(item);              
-            });
-          }
-  		})
-  	}
-
-  	vm.getData();
-  	//vm.loadMoreShots();
 
   	vm.showDialog = function(item) {
   		console.log(item);
@@ -89,12 +114,53 @@ angular.module('mainCtrl', [])
        });
   	}
 
-  	function getMeta(url){   
-    	var img = new Image();
-    	img.addEventListener("load", function(){
-        	alert( this.naturalWidth +' '+ this.naturalHeight );
-    	});
-    	img.src = url;
-	}
+  	function getLastCreatedValue(listItems) {
+  		var value = 0;
+  		for (var i = 0; i< listItems.length; i++) {
+  			if (i == 0) {
+  				value = listItems[i].created_at;
+  			} else if (listItems[i].created_at < value ) {
+  				value = listItems[i].created_at;
+  			}
+  		}
+  		return value;
+  	}
+
+  	function orderingListItem(listItems) {  		
+  		listItems = listItems.sort(function(a,b) {
+        	return b.created_at - a.created_at;
+        });
+  	}
+
+  	function loadItems11() {
+  		vm.loadingMore = true; 
+  		var query = ref;
+
+  		if (vm.page == 0) {
+  			query = ref.orderByChild("created_at").limitToLast(10);			
+  		} else {
+  			query = ref.orderByChild("created_at").endAt(vm.lastCreatedValue).limitToLast(10);
+  		}
+	  	
+	  	var listTempItems = $firebaseArray(query);
+	  	listTempItems.$loaded().then(function() {	  		
+	  		console.log("done");
+	  		listTempItems = listTempItems.sort(function(a,b) {
+	        	return b.created_at - a.created_at;
+	        });
+
+	        var listOrderdItems = listTempItems;
+	        vm.lastCreatedValue = listOrderdItems[4].created_at;
+	        if (vm.page == 0) {
+	        	vm.listItems = listOrderdItems;	
+	        } else {
+	        	listOrderdItems.concat(vm.listItems);
+	        }
+	        
+	  	});  
+
+	  	vm.page++;	
+	  	vm.loadingMore = false;
+  	}
 
 });

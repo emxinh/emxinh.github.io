@@ -47,7 +47,7 @@
         				ag-grid-width="300" 
         				ag-gutter-size="12" 
         				ag-id="shots" 
-        				ag-infinite-scroll="vm.getData()"
+        				ag-infinite-scroll="vm.loadItems()"
         			>
           				<div class="card" ng-repeat="item in vm.listItems track by $index">
             				<!-- <div class="img" ng-click="vm.showDialog(item)" style="background-image: url({{::item.url}});"></div>-->            				
@@ -82,8 +82,8 @@
 		<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.4/angular-material.js'></script>
 		<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.6.4/js/ngDialog.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
-		<script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>		
+		<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
 		<!-- <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script> -->
 		<script>
 		  // Initialize Firebase
