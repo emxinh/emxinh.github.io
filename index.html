@@ -57,7 +57,7 @@
 		                            {{::item.title}}
 		                        </div>
 		                        <div class="uploaded-date ng-binding">
-		                            Uploaded on : Wed Nov 23 2016
+		                            Uploaded on : {{item.updated_at | date:'MMMM, d yyyy' : 'UTC'}}
 		                        </div>
 		                       <!--  <div class="likes-watch-wrap">
 		                            <div class="likes ng-binding"><span class="icon-like"></span> 35</div>
