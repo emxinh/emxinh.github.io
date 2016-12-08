@@ -4,10 +4,18 @@ angular.module('mainCtrl', [])
 
 	var vm = this;
 	vm.ref = firebase.database().ref('items');
+	vm.cateRef = firebase.database().ref('categories');
+
 	vm.listItems = [];
+	vm.listCategories = $firebaseArray(vm.cateRef);
+	vm.selectedTopics = [];
 	vm.lastCreatedValue = 0;  	 
   	vm.loadingMore = false;  		
 	vm.page = 0; 
+	vm.selectedItem = null;
+	vm.searchText = "";
+	vm.autocompleteDemoRequireMatch = true;
+	vm.transformChip =  transformChip;
 
 	vm.loadItems = function() {
 		if(vm.loadingMore) return;
@@ -50,24 +58,6 @@ angular.module('mainCtrl', [])
 	}; 	
 
 	vm.loadItems();
-
-  	vm.loadMoreShots = function() {
-		console.log('aaa');
-    	if(vm.loadingMore) return;
-    	vm.page++;
-    	// var deferred = $q.defer();
-    	vm.loadingMore = true;
-    	var promise = $http.get('https://api.dribbble.com/v1/shots/?per_page=24&page='+vm.page+'&access_token=3df6bcfc60b54b131ac04f132af615e60b0bd0b1cadca89a4761cd5d125d608f');
-    	promise.then(function(data) {
-      		var shotsTmp = angular.copy(vm.shots);
-      		shotsTmp = shotsTmp.concat(data.data);
-      		vm.shots = shotsTmp;
-      		vm.loadingMore = false;
-    	}, function() {
-      		vm.loadingMore = false;
-    	});
-    	return promise;
-  	};
 
   	vm.showDialog = function(item) {
   		console.log(item);
@@ -132,35 +122,12 @@ angular.module('mainCtrl', [])
         });
   	}
 
-  	function loadItems11() {
-  		vm.loadingMore = true; 
-  		var query = ref;
-
-  		if (vm.page == 0) {
-  			query = ref.orderByChild("created_at").limitToLast(10);			
-  		} else {
-  			query = ref.orderByChild("created_at").endAt(vm.lastCreatedValue).limitToLast(10);
-  		}
-	  	
-	  	var listTempItems = $firebaseArray(query);
-	  	listTempItems.$loaded().then(function() {	  		
-	  		console.log("done");
-	  		listTempItems = listTempItems.sort(function(a,b) {
-	        	return b.created_at - a.created_at;
-	        });
-
-	        var listOrderdItems = listTempItems;
-	        vm.lastCreatedValue = listOrderdItems[4].created_at;
-	        if (vm.page == 0) {
-	        	vm.listItems = listOrderdItems;	
-	        } else {
-	        	listOrderdItems.concat(vm.listItems);
-	        }
-	        
-	  	});  
-
-	  	vm.page++;	
-	  	vm.loadingMore = false;
+  	function transformChip (chip) {
+	    if (angular.isObject(chip)) {
+	      return chip;
+	    }
+    	// Otherwise, create a new one
+    	return { name: chip, type: 'new' }
   	}
 
 });

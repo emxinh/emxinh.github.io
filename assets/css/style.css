@@ -247,7 +247,7 @@ md-toolbar {
 .img-desc-wrap .title {
   font-size: 18px;
   line-height: 22px;
-  color: #333333 !important;
+  color: #00BCD4 !important;
 }
 .img-desc-wrap .uploaded-date {
   margin-top: 5px;
@@ -261,4 +261,57 @@ md-toolbar {
 .img-desc-wrap .watch {
   display: inline-block;
   margin-right: 20px;
+}
+
+.searchBox {
+  /*margin-top: 100px;*/
+  margin-left: 50px;
+}
+
+.searchContainer {
+  width: 100%;  
+}
+
+.searchInput {
+  border-color: transparent;
+  /*padding-top: 20px;*/
+  height: 25px;
+  padding-left: 10px;
+  outline: none;
+}
+
+md-chips {
+  width: 900px !important;
+}
+
+.md-chips .md-chip-input-container {
+  /*width: 800px !important;*/
+}
+
+.md-chips .md-chip-input-container md-autocomplete input {
+  color: white !important;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #cac0c0 !important;
+}
+
+.ng-scope {
+  color: teal;
+}
+
+.md-button.md-accent.md-raised {
+  background-color: white !important;
+}
+
+md-chips .md-chip.md-focused {
+  background-color: black !important;
+}
+
+md-chips .md-chip {
+  background: white !important;
+}
+
+.ng-isolate-scope {
+  color: rgba(199, 61, 61, 0.87) !important;
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html >
+<html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Em Xinh on TOP</title>
+		<title>Em xinh on TOP</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 		<link rel="stylesheet" href="assets/css/normalize.css">
 		<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.4/angular-material.css'>
@@ -26,10 +26,38 @@
       				<h2>
 			        	<span>Girl Xinh on TOP</span>
 			      	</h2>
-    			</div>
-  			</md-toolbar>
 
+    			    			
+    			<div class="searchBox" layout="row" width="100%" layout-align="center center">       
+	      				<md-content layout-padding layout="column" style="background: transparent;">
+	        				<div layout="row" width="100%">
+	          					<md-chips ng-model="vm.selectedTopics" md-autocomplete-snap
+	                  				md-transform-chip="vm.transformChip($chip)"
+	                  				md-require-match="vm.autocompleteDemoRequireMatch">                         
+						            <md-autocomplete
+						                md-selected-item="vm.selectedItem"
+						                md-search-text="vm.searchText"
+						                md-items="item in vm.listCategories | filter:vm.searchText"
+						                md-item-text="item.category_name"
+						                placeholder="Filter theo danh mục">
+						              <span md-highlight-text="vm.searchText">{{item.category_name}}</span>
+						            </md-autocomplete>
+
+	              					<md-chip-template>
+	               						<span>
+	                  						<strong class="{{$index}}">{{$chip.category_name}}</strong>
+	                					</span>
+	              					</md-chip-template>
+	          					</md-chips>
+	          					<md-button class="md-accent md-raised btn-search" ng-click="vm.doSearch()">SEARCH</md-button>			
+	        				</div>
+	      				</md-content>
+    				</div>
+    				</div>
+  			</md-toolbar>
+					
   			<md-content id="content-scroller">
+  				
 <!--     			<div id="summary">
       				<h3>Description</h3>
       				<p>Executes method on the controller when the user approaches the bottom of the page as they scroll.</p>
@@ -38,13 +66,12 @@
       				<h3>Example</h3>
       
       				<h3>Demo</h3>
-
     			</div> -->
     			<div>
         			<div 
         				class="cards-wrap" 
         				angular-grid="vm.listItems" 
-        				ag-grid-width="220" 
+        				ag-grid-width="250" 
         				ag-gutter-size="12" 
         				ag-id="shots" 
         				ag-infinite-scroll="vm.loadItems()"
@@ -83,8 +110,7 @@
 		<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.6.4/js/ngDialog.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>		
-		<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
-		<!-- <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script> -->
+		<script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>		
 		<script>
 		  // Initialize Firebase
 		  var config = {
@@ -95,12 +121,7 @@
 		    messagingSenderId: "410364848328"
 		  };
 		  firebase.initializeApp(config);
-		</script>
-
-		<!-- <script src='https://cdn.rawgit.com/sroze/ngInfiniteScroll/master/build/ng-infinite-scroll.js'></script> -->
-		<!-- <script>
-			(function() {var a = document.createElement("script");a.src = "https://rawgit.com/kentcdodds/ng-stats/master/dist/ng-stats.js";a.onload=function(){window.showAngularStats({position: 'topright'})};document.head.appendChild(a)})();
-		</script> -->
+		</script>		
 		<script src="assets/js/angulargrid.js"></script>
 		<script src="controllers/mainCtrl.js"></script>
         <script src="app.js"></script>
